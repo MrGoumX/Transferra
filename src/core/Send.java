@@ -7,69 +7,59 @@ import static java.lang.System.exit;
 
 public class Send implements Runnable{
     // Constants.
-    private static final int  port = 49900;
     private static final int size = 1024*1024;
 
     private byte[] buffer = new byte[size];
-    private OutputStream os = null;
     private BufferedInputStream bfis;
     private List<File> files;
     private String ip,id;
+    private int port;
 
-    public Send(List<File> files, String ip, String id){
-        this.files=files;
-        this.ip=ip;
-        this.id=id;
+    public Send(List<File> files, String ip, String id, int port ){
+        this.files = files;
+        this.ip = ip;
+        this.id = id;
+        this.port = port;
     }
 
     public void run(){
-        sendAuthID(id);
-        openFile(files);
         try{
-            send();
-        }catch (IOException e){
-            System.err.println("Error closing server socket.\n\n");
-            e.printStackTrace();
-            exit(1);
+            sendString(id);
+            openFile(files);
+            sendFiles();
+        }catch (IOException ioException){
+            ioException.printStackTrace();
         }
     }
 
-    private void openFile(List<File> files){
+    private void openFile(List<File> files) throws IOException{
+
         for (int i = 0; i < files.size(); i++) {
+
             //send name of file
-            try {
-                Socket sock = new Socket(ip, port);
-                OutputStream os = sock.getOutputStream();
-                String name = files.get(i).getName();
-                Writer sendName = new PrintWriter(os);
-                sendName.write(name);
-                sendName.flush();
-                if (sendName != null) sendName.close();
-                if (os != null) os.close();
-                if (sock != null) sock.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String name = files.get(i).getName();
+            sendString(name);
+
             //file.
             try {
                 FileInputStream fis = new FileInputStream(files.get(i));
                 bfis = new BufferedInputStream(fis);
                 System.out.println("File: " + files.get(i).getAbsolutePath() + " is opened.");
             } catch (FileNotFoundException e) {
-                System.err.println("File for transfer doesnt locate.\n\n");
+                System.err.println("File for transfer does'nt locate.\n\n");
                 e.printStackTrace();
                 exit(1);
             }
         }
     }
 
-    private void send() throws IOException{
+    private void sendFiles() throws IOException{
         Socket sock = new Socket(ip, port);
-        //sock = server.accept();
-        System.out.println("Client socket accepted");
+        OutputStream os = null;
+
         // read file from computer.
         while (true) {
-            int i=0;
+            int i = 0;
             i = bfis.read(buffer, 0, size);
             if (i == -1) {
                 break;
@@ -86,18 +76,15 @@ public class Send implements Runnable{
         if (sock != null) sock.close();
     }
 
-    private void sendAuthID(String ID){
-        try {
-            Socket sock = new Socket(ip, port);
-            OutputStream os = sock.getOutputStream();
-            Writer sendName = new PrintWriter(os);
-            sendName.write(ID);
-            sendName.flush();
-            if (sendName != null) sendName.close();
-            if (os != null) os.close();
-            if (sock != null) sock.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void sendString(String str) throws IOException{
+
+        Socket sock = new Socket(ip, port);
+        OutputStream os = sock.getOutputStream();
+        Writer sendName = new PrintWriter(os);
+        sendName.write(str);
+        sendName.flush();
+        if (sendName != null) sendName.close();
+        if (os != null) os.close();
+        if (sock != null) sock.close();
     }
 }
