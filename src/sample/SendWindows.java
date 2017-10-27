@@ -63,6 +63,8 @@ public class SendWindows {
     }
 
     public void send(ActionEvent e) {
+        String ip = getIpFromId(idTextField.getText());
+
         for(int i=0; i<filesList.size();i++) {
             send = new Send(filesList,ip,authendicationTextField.getText());
             sendThread = new Thread(send);
