@@ -70,7 +70,7 @@ public class SendWindows {
         String ip = getIpFromId(idTextField.getText());
 
         // start client.
-        Runnable send = new Send(filesList, ip, authendicationTextField.getText(),49900);
+        Runnable send = new Send(filesList, ip, authendicationTextField.getText(),80);
         Thread sendThread = new Thread(send);
         sendThread.start();
     }

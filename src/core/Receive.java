@@ -41,6 +41,7 @@ public class Receive implements Runnable{
                     }
                 }
             }
+            closeServer();
         }
         catch(IOException e){
             e.printStackTrace();
@@ -81,7 +82,6 @@ public class Receive implements Runnable{
 
         if(fos!=null)fos.close();
         if(bos!=null)bos.close();
-        if(sock!=null)sock.close();
         if(server!=null)server.close();
     }
 
@@ -95,7 +95,6 @@ public class Receive implements Runnable{
             check = true;
         }
         receiveAuth.close();
-        sock.close();
 
         return check;
     }
@@ -105,6 +104,7 @@ public class Receive implements Runnable{
         BufferedReader receiveName = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         String name = receiveName.readLine();
         receiveName.close();
+        System.out.println(name);
         return name;
     }
 
@@ -113,7 +113,11 @@ public class Receive implements Runnable{
         DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
         int no = in.readInt();
         in.close();
-        sock.close();
         return no;
+    }
+
+    private void closeServer() throws IOException{
+
+        if(server!=null)server.close();
     }
 }
