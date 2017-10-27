@@ -26,7 +26,6 @@ public class Send implements Runnable{
         try{
             sendString(id);
             openFile(files);
-            sendFiles();
         }catch (IOException ioException){
             ioException.printStackTrace();
         }
@@ -44,6 +43,7 @@ public class Send implements Runnable{
             try {
                 FileInputStream fis = new FileInputStream(files.get(i));
                 bfis = new BufferedInputStream(fis);
+                sendFiles();
                 System.out.println("File: " + files.get(i).getAbsolutePath() + " is opened.");
             } catch (FileNotFoundException e) {
                 System.err.println("File for transfer does'nt locate.\n\n");
