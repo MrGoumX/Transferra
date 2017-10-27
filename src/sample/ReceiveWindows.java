@@ -8,7 +8,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Random;
 
 public class ReceiveWindows {
@@ -31,14 +29,10 @@ public class ReceiveWindows {
     private TextField authendicationTextField;
 
     @FXML
-    private ComboBox networkComboBox;
+    private ComboBox<String> networkComboBox;
 
     @FXML
     private ProgressBar progressBar;
-
-    private File file;
-    private Runnable receive;
-    private Thread receiveThread;
 
     public void initialize(){
 
@@ -51,6 +45,7 @@ public class ReceiveWindows {
 
     }
 
+    // Choose between id for Local IP(LAN) or for public IP(Internet).
     public void netComboAction(ActionEvent e) {
         if(networkComboBox.getValue().equals("LAN")){
             IDTextField.setText(getIdFromIp(getLocalIp()));
@@ -60,19 +55,23 @@ public class ReceiveWindows {
         }
     }
 
+    // Choose directory where the files will store.
     public void chooseDirAction(ActionEvent e){
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Επιλογή Θέση για Αποθήκευση Αρχείων");
-        file = directoryChooser.showDialog(null);
+        File file = directoryChooser.showDialog(null);
         if(file != null) folderTextField.setText(file.getAbsolutePath());
     }
 
+    // Setup server and receive files at new thread.
     public void receive(ActionEvent e){
-        receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 80);
-        receiveThread = new Thread(receive);
+        Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
+        Thread receiveThread = new Thread(receive);
         receiveThread.start();
     }
 
+    // Return public ip.
     private String getPublicIp(){
         try{
             URL whatismyip = new URL("http://checkip.amazonaws.com");
@@ -85,6 +84,7 @@ public class ReceiveWindows {
         return null;
     }
 
+    // Return Local IP.
     private String getLocalIp(){
         try{
             return InetAddress.getLocalHost().getHostAddress();
@@ -94,6 +94,7 @@ public class ReceiveWindows {
         return null;
     }
 
+    // Translate ip to id.
     private String getIdFromIp(String ip){
 
         Random random = new Random();

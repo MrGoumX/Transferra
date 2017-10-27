@@ -1,10 +1,6 @@
 package sample;
 
 import core.Send;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,14 +9,9 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Observable;
 import java.util.Random;
 
 
@@ -69,8 +60,8 @@ public class SendWindows {
         // translate id to ip.
         String ip = getIpFromId(idTextField.getText());
 
-        // start client.
-        Runnable send = new Send(filesList, ip, authendicationTextField.getText(),80);
+        // start client in new thread.
+        Runnable send = new Send(fileComboBox.getItems(), ip, authendicationTextField.getText(),49900);
         Thread sendThread = new Thread(send);
         sendThread.start();
     }

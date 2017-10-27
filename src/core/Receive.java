@@ -1,11 +1,8 @@
 package core;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import static java.lang.System.exit;
 
 public class Receive implements Runnable{
@@ -14,110 +11,113 @@ public class Receive implements Runnable{
     private static final int size = 1024*1024;
 
     private ServerSocket server = null;
-    private BufferedOutputStream bos;
     private FileOutputStream fos;
     private String storePath;
     private String authID;
     private  int port;
 
-    public Receive(String file, String authID, int port){
-        this.storePath = file;
-        this.authID=authID;
+    // Constructor.
+    public Receive(String storePath, String authID, int port){
+        this.storePath = storePath;
+        this.authID = authID;
         this.port = port;
     }
 
+    // run execute whenever a thread create.
     public void run(){
         try {
-            startServer(port);
+
+            // start server.
+            server = new ServerSocket(port);
+            System.out.println("Server socket is created at port: " + port);
+
+            // if authentication id is correct:
             if (receiveAuth()) {
-                for(int i=0; i<receiveNoFiles();i++){
+                // for each file:
+                int numberOfFiles = receiveNoFiles();
+                for(int i=0; i<numberOfFiles;i++){
+                    // open path for storing.
                     openFile(storePath, receiveName());
-                    try {
-                        readData();
-                    } catch (IOException e) {
-                        System.err.println("Error reading data.\n\n");
-                        e.printStackTrace();
-                        exit(1);
-                    }
+                    // receive and store this file.
+                    readData();
                 }
+                // close server .
+                server.close();
             }
-            closeServer();
         }
         catch(IOException e){
             e.printStackTrace();
         }
     }
 
+    // openFile create a FileOutptStream with the path andd name of file witch receive.
     private void openFile(String path, String name){
 
         try{
-            fos = new FileOutputStream(path + File.separator + name);
-            bos = null;
-            System.out.println("File: "+ path + " is opened.");
+            String fullPath = path + File.separator + name;
+            fos = new FileOutputStream(fullPath);
+            System.out.println("File: "+ fullPath + " is opened for storing.");
         }catch(FileNotFoundException e){
-            System.err.println("Error opening file.\n\n");
+            System.err.println("Error opening file at path: " + path + File.separator + name +".\n\n");
             e.printStackTrace();
             exit(1);
         }
     }
 
-    private void startServer(int port) throws IOException{
-        server = new ServerSocket(port);
-        System.out.println("Server socket is created");
-    }
-
+    // readData receive and store a file.
     private void readData() throws IOException{
 
         int current;
         byte buffer[] = new byte[size];
         Socket sock = server.accept();
-        System.out.println("Connect to server.");
+        System.out.println("Connect with client for sending files.");
         InputStream is = sock.getInputStream();
-        bos = new BufferedOutputStream(fos);
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
         while((current = is.read(buffer))>0){
             bos.write(buffer,0,current);
         }
         bos.flush();
-        System.out.println("Transfer Complete.");
+        System.out.println("Transfer Complete from server.");
 
-        if(fos!=null)fos.close();
-        if(bos!=null)bos.close();
-        if(server!=null)server.close();
+        fos.close();
+        bos.close();
     }
 
+    // receiveAuth receive and check if authentication id is correct.
     private boolean receiveAuth() throws IOException {
 
-        boolean check = false;
         Socket sock = server.accept();
+        System.out.println("Connect with client for sending auth id.");
         BufferedReader receiveAuth = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         String recAuth = receiveAuth.readLine();
-        if (recAuth.equals(authID)) {
-            check = true;
-        }
         receiveAuth.close();
-
-        return check;
+        sock.close();
+        System.out.println("received auth id is: "+recAuth);
+        return recAuth.equals(authID);
     }
 
+    // receiveName receive the name and suffix of the file.
     private String receiveName()throws IOException {
         Socket sock = server.accept();
+        System.out.println("Connect with client for sending name files.");
         BufferedReader receiveName = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         String name = receiveName.readLine();
         receiveName.close();
-        System.out.println(name);
+        sock.close();
+        System.out.println("received name of files is: "+name);
         return name;
     }
 
+    // receiveNoFiles receives the number of all files that will be receive.
     private int receiveNoFiles() throws IOException {
         Socket sock = server.accept();
+        System.out.println("Connect with client for sending number files.");
         DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
         int no = in.readInt();
         in.close();
+        sock.close();
+        System.out.println("received number of files is: "+no);
         return no;
     }
 
-    private void closeServer() throws IOException{
-
-        if(server!=null)server.close();
-    }
 }
