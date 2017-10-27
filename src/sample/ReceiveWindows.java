@@ -68,7 +68,7 @@ public class ReceiveWindows {
     }
 
     public void receive(ActionEvent e){
-        receive = new Receive(IDTextField.getText(),folderTextField.getText(),authendicationTextField.getText());
+        receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
         receiveThread = new Thread(receive);
         receiveThread.start();
     }
