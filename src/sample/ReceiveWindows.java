@@ -1,5 +1,6 @@
 package sample;
 
+import core.Receive;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,7 +68,9 @@ public class ReceiveWindows {
     }
 
     public void receive(ActionEvent e){
-
+        receive = new Receive(IDTextField.getText(),folderTextField.getText(),authendicationTextField.getText());
+        receiveThread = new Thread(receive);
+        receiveThread.start();
     }
 
     private String getPublicIp(){
