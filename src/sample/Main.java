@@ -1,6 +1,5 @@
-package gui;
+package sample;
 
-import core.Receive;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,13 +15,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.setResizable(false);
         primaryStage.show();
-        listener();
-    }
-
-    public void listener(){
-        Runnable receive = new Receive();
-        Thread receiveThread =new Thread(receive);;
-        receiveThread.start();
     }
 
     public static void main(String[] args) {

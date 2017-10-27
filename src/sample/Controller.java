@@ -1,4 +1,4 @@
-package gui;
+package sample;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;

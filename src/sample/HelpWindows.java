@@ -1,4 +1,4 @@
-package gui;
+package sample;
 
 public class HelpWindows {
 }
