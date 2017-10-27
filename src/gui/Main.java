@@ -25,7 +25,6 @@ public class Main extends Application {
         receiveThread.start();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }

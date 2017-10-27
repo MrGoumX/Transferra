@@ -1,6 +1,5 @@
-package gui;
+package sample;
 
-import core.Receive;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,14 +10,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.scene.control.ProgressBar;
 
 import java.io.File;
-
-import core.Send;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Observable;
+import java.util.Random;
 
 
 public class SendWindows {
@@ -27,60 +29,38 @@ public class SendWindows {
     private ComboBox fileComboBox;
 
     @FXML
-    private TextField sendFileTextField;
+    private TextField idTextField;
 
     @FXML
-    private Button fileChooseButton;
-
-    @FXML
-    private ComboBox networkComboBox;
-
-    @FXML
-    private TextField ipTextField;
-
-    @FXML
-    private HBox hbox;
+    private TextField authendicationTextField;
 
     @FXML
     private ProgressBar progressBar;
 
-    private File fileToSend;
-    private String ip;
-    private Runnable send;
-    private Thread sendThread;
-
+    @FXML
+    private Button removeButton;
 
     public void initialize() {
 
-        networkComboBox.setItems(FXCollections.observableArrayList("Internet","LAN"));
-        networkComboBox.getSelectionModel().selectFirst();
+        Image image = new Image(getClass().getResourceAsStream("remove.png"));
+        removeButton.setGraphic(new ImageView(image));
 
-        sendFileTextField.setEditable(false);
+        authendicationTextField.setText((new Random().nextInt(899999) + 100000) + "" );
 
-    }
-
-    public void netComboAction(ActionEvent e) {
-        if(networkComboBox.getValue().equals("LAN")){
-            //initialize hbox with a listview of localHosts
-        }
     }
 
     public void chooseFile(ActionEvent e) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
-        fileToSend = fileChooser.showOpenDialog(null);
-        if (fileToSend!=null){
-            sendFileTextField.setText(fileToSend.getAbsolutePath());
-        }
+        List<File> filesList= fileChooser.showOpenMultipleDialog(null);
+        fileComboBox.getItems().addAll(filesList);
     }
 
     public void send(ActionEvent e) {
-        ip = ipTextField.getText();
-        System.out.println(ip);
-        send = new Send(fileToSend,ip);
-        sendThread = new Thread(send);
-        sendThread.start();
+
     }
 
+    public void removeFileAction(ActionEvent e) {
+        fileComboBox.getItems().remove(fileComboBox.getSelectionModel().getSelectedItem());
+    }
 }

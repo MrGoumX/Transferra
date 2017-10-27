@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SendWindows">
+<VBox prefHeight="127.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SendWindows">
 <children>
    <GridPane>
       <columnConstraints>
@@ -16,13 +16,12 @@
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <children>
-         <Button fx:id="fileChooseButton" mnemonicParsing="false" onAction="#chooseFile" text="Επιλογή αρχείου για αποστολή:" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#chooseFile" text="Επιλογή αρχείων προς αποστολή:" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
             <GridPane.margin>
                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </GridPane.margin>
@@ -30,33 +29,12 @@
                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </padding>
          </Button>
-         <TextField fx:id="sendFileTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <GridPane.margin>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </GridPane.margin>
-            <padding>
-               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-            </padding>
-         </TextField>
-         <ComboBox fx:id="networkComboBox" onAction="#netComboAction" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <padding>
-               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-            </padding>
-            <GridPane.margin>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </GridPane.margin>
-         </ComboBox>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Αποστολή μέσω:" GridPane.rowIndex="2">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID αποστολής:" GridPane.rowIndex="1">
             <GridPane.margin>
                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </GridPane.margin>
          </Text>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP προορισμού:" GridPane.rowIndex="3">
-            <GridPane.margin>
-               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-            </GridPane.margin>
-         </Text>
-         <TextField fx:id="ipTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <TextField fx:id="idTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <padding>
                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
             </padding>
@@ -64,25 +42,50 @@
                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </GridPane.margin>
          </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Αποστολή Αρχείου:">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <ComboBox fx:id="fileComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="184.0" HBox.hgrow="NEVER">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeFileAction">
+                     <HBox.margin>
+                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                  </Button>
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+               </GridPane.margin>
+            </HBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID πιστοποίησης:" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
             </Text>
-            <!--<ComboBox fx:id="fileComboBox" onAction="#fileComboAction" prefHeight="25.0" prefWidth="115.0" GridPane.columnIndex="1">
+            <TextField fx:id="authendicationTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
                <GridPane.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
-            </ComboBox>-->
+            </TextField>
       </children>
       <padding>
          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
       </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
    </GridPane>
-      <HBox fx:id="hbox" />
       <HBox>
          <children>
          <ProgressBar fx:id="progressBar" prefHeight="25.0" prefWidth="356.0" progress="0.0">
