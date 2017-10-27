@@ -1,6 +1,7 @@
 package core;
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -12,16 +13,18 @@ public class Send implements Runnable{
     private byte[] buffer = new byte[size];
     private OutputStream os = null;
     private BufferedInputStream bfis;
-    private File file;
-    private String ip;
+    private List<File> files;
+    private String ip,ID;
 
-    public Send(File file, String ip){
-        this.file=file;
+    public Send(List<File> files, String ip, String ID){
+        this.files=files;
         this.ip=ip;
+        this.ID=ID;
     }
 
     public void run(){
-        openFile(file);
+        sendAuthID(ID);
+        openFile(files);
         try{
             send();
         }catch (IOException e){
@@ -31,16 +34,32 @@ public class Send implements Runnable{
         }
     }
 
-    private void openFile(File file){
-        try{
+    private void openFile(List<File> files){
+        for (int i = 0; i < files.size(); i++) {
+            //send name of file
+            try {
+                Socket sock = new Socket(ip, port);
+                OutputStream os = sock.getOutputStream();
+                String name = files.get(i).getName();
+                Writer sendName = new PrintWriter(os);
+                sendName.write(name);
+                sendName.flush();
+                if (sendName != null) sendName.close();
+                if (os != null) os.close();
+                if (sock != null) sock.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             //file.
-            FileInputStream fis = new FileInputStream(file);
-            bfis = new BufferedInputStream(fis);
-            System.out.println("File: "+ file.getAbsolutePath() + " is opened.");
-        }catch(FileNotFoundException e){
-            System.err.println("File for transfer doesnt locate.\n\n");
-            e.printStackTrace();
-            exit(1);
+            try {
+                FileInputStream fis = new FileInputStream(files.get(i));
+                bfis = new BufferedInputStream(fis);
+                System.out.println("File: " + files.get(i).getAbsolutePath() + " is opened.");
+            } catch (FileNotFoundException e) {
+                System.err.println("File for transfer doesnt locate.\n\n");
+                e.printStackTrace();
+                exit(1);
+            }
         }
     }
 
@@ -65,5 +84,20 @@ public class Send implements Runnable{
         if (bfis != null) bfis.close();
         if (os != null) os.close();
         if (sock != null) sock.close();
+    }
+
+    private void sendAuthID(String ID){
+        try {
+            Socket sock = new Socket(ip, port);
+            OutputStream os = sock.getOutputStream();
+            Writer sendName = new PrintWriter(os);
+            sendName.write(ID);
+            sendName.flush();
+            if (sendName != null) sendName.close();
+            if (os != null) os.close();
+            if (sock != null) sock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

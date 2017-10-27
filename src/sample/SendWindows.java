@@ -1,5 +1,6 @@
 package sample;
 
+import core.Send;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -40,6 +41,11 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
+    private Runnable send;
+    private Thread sendThread;
+    private List<File> filesList;
+    private String ip;
+
     public void initialize() {
 
         Image image = new Image(getClass().getResourceAsStream("remove.png"));
@@ -52,12 +58,16 @@ public class SendWindows {
     public void chooseFile(ActionEvent e) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
-        List<File> filesList= fileChooser.showOpenMultipleDialog(null);
+        filesList= fileChooser.showOpenMultipleDialog(null);
         fileComboBox.getItems().addAll(filesList);
     }
 
     public void send(ActionEvent e) {
-
+        for(int i=0; i<filesList.size();i++) {
+            send = new Send(filesList,ip,authendicationTextField.getText());
+            sendThread = new Thread(send);
+            sendThread.start();
+        }
     }
 
     public void removeFileAction(ActionEvent e) {

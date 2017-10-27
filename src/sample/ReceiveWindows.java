@@ -35,6 +35,10 @@ public class ReceiveWindows {
     @FXML
     private ProgressBar progressBar;
 
+    private File file;
+    private Runnable receive;
+    private Thread receiveThread;
+
     public void initialize(){
 
         networkComboBox.setItems(FXCollections.observableArrayList("Internet","LAN"));
@@ -58,7 +62,7 @@ public class ReceiveWindows {
     public void chooseDirAction(ActionEvent e){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Επιλογή Θέση για Αποθήκευση Αρχείων");
-        File file = directoryChooser.showDialog(null);
+        file = directoryChooser.showDialog(null);
         if(file != null) folderTextField.setText(file.getAbsolutePath());
     }
 

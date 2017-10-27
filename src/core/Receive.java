@@ -10,12 +10,16 @@ public class Receive implements Runnable{
 
     // Constants.
     private static final int  port = 49900;
-    private static final String storePath = "D:"+ File.separator + "MGX"+ File.separator + "Desktop"+ File.separator + "Test.txt";
     private static final int size = 1024*1024;
 
     private ServerSocket server = null;
     private BufferedOutputStream bos;
     private FileOutputStream fos;
+    private File storePath;
+
+    public Receive(File file){
+        this.storePath = file;
+    }
 
     public void run(){
         openFile(storePath);
@@ -29,7 +33,7 @@ public class Receive implements Runnable{
         }
     }
 
-    private void openFile(String path){
+    private void openFile(File path){
         try{
             fos = new FileOutputStream(path);
             bos = null;
