@@ -15,9 +15,11 @@ public class Receive implements Runnable{
     private ServerSocket server = null;
     private BufferedOutputStream bos;
     private FileOutputStream fos;
-    private File storePath;
+    private String storePath;
+    private String ID;
 
-    public Receive(File file){
+    public Receive(String ID, String file){
+        this.ID=ID;
         this.storePath = file;
     }
 
@@ -33,7 +35,7 @@ public class Receive implements Runnable{
         }
     }
 
-    private void openFile(File path){
+    private void openFile(String path){
         try{
             fos = new FileOutputStream(path);
             bos = null;
