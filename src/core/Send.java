@@ -14,16 +14,16 @@ public class Send implements Runnable{
     private OutputStream os = null;
     private BufferedInputStream bfis;
     private List<File> files;
-    private String ip,ID;
+    private String ip,id;
 
-    public Send(List<File> files, String ip, String ID){
+    public Send(List<File> files, String ip, String id){
         this.files=files;
         this.ip=ip;
-        this.ID=ID;
+        this.id=id;
     }
 
     public void run(){
-        sendAuthID(ID);
+        sendAuthID(id);
         openFile(files);
         try{
             send();
