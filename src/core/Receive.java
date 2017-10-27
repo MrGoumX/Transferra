@@ -16,26 +16,35 @@ public class Receive implements Runnable{
     private BufferedOutputStream bos;
     private FileOutputStream fos;
     private String storePath;
-    private String ID;
+    private String ID,authID;
 
-    public Receive(String ID, String file){
+    public Receive(String ID, String file,String authID){
         this.ID=ID;
         this.storePath = file;
+        this.authID=authID;
     }
 
     public void run(){
-        openFile(storePath);
-        try{
+        try {
             startServer(port);
-            readData();
-        }catch (IOException e){
-            System.err.println("Error reading data.\n\n");
+            if (receiveAuth()) {
+                openFile(storePath);
+                try {
+                    readData();
+                } catch (IOException e) {
+                    System.err.println("Error reading data.\n\n");
+                    e.printStackTrace();
+                    exit(1);
+                }
+            }
+        }
+        catch(IOException e){
             e.printStackTrace();
-            exit(1);
         }
     }
 
     private void openFile(String path){
+
         try{
             fos = new FileOutputStream(path);
             bos = null;
@@ -70,5 +79,18 @@ public class Receive implements Runnable{
         if(bos!=null)bos.close();
         if(sock!=null)sock.close();
         if(server!=null)server.close();
+    }
+
+    private boolean receiveAuth() throws IOException {
+        boolean check=false;
+        Socket sock = null;
+        sock = server.accept();
+        BufferedReader receiveAuth = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        String recAuth = receiveAuth.readLine();
+        if (recAuth.equals(authID)) {
+            check = true;
+        }
+        receiveAuth.close();
+        return check;
     }
 }
