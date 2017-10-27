@@ -1,5 +1,7 @@
 package core;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,13 +30,15 @@ public class Receive implements Runnable{
         try {
             startServer(port);
             if (receiveAuth()) {
-                openFile(storePath);
-                try {
-                    readData();
-                } catch (IOException e) {
-                    System.err.println("Error reading data.\n\n");
-                    e.printStackTrace();
-                    exit(1);
+                for(int i=0; i<receiveNoFiles();i++){
+                    openFile(storePath,reveiveName());
+                    try {
+                        readData();
+                    } catch (IOException e) {
+                        System.err.println("Error reading data.\n\n");
+                        e.printStackTrace();
+                        exit(1);
+                    }
                 }
             }
         }
@@ -43,10 +47,10 @@ public class Receive implements Runnable{
         }
     }
 
-    private void openFile(String path){
+    private void openFile(String path, String name){
 
         try{
-            fos = new FileOutputStream(path);
+            fos = new FileOutputStream(path + File.separator + name);
             bos = null;
             System.out.println("File: "+ path + " is opened.");
         }catch(FileNotFoundException e){
@@ -92,5 +96,23 @@ public class Receive implements Runnable{
         }
         receiveAuth.close();
         return check;
+    }
+
+    private String reveiveName()throws IOException {
+        Socket sock = null;
+        sock = server.accept();
+        BufferedReader receiveName = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        String name = receiveName.readLine();
+        receiveName.close();
+        return name;
+    }
+
+    private int receiveNoFiles() throws IOException {
+        Socket sock = null;
+        sock = server.accept();
+        DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+        int no = in.readInt();
+        in.close();
+        return no;
     }
 }

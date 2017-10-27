@@ -87,4 +87,16 @@ public class Send implements Runnable{
         if (os != null) os.close();
         if (sock != null) sock.close();
     }
+
+    private void sendNoFiles() throws IOException{
+
+        Socket sock = new Socket(ip,port);
+        OutputStream os = sock.getOutputStream();
+        DataOutputStream out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
+        out.writeInt(files.size());
+        out.flush();
+        if(out!=null)out.close();
+        if(os!=null)os.close();
+        if(sock!=null)sock.close();
+    }
 }
