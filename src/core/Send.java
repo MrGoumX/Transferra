@@ -25,6 +25,7 @@ public class Send implements Runnable{
     public void run(){
         try{
             sendString(id);
+            sendNoFiles();
             openFile(files);
         }catch (IOException ioException){
             ioException.printStackTrace();
@@ -90,7 +91,7 @@ public class Send implements Runnable{
 
     private void sendNoFiles() throws IOException{
 
-        Socket sock = new Socket(ip,port);
+        Socket sock = new Socket(ip, port);
         OutputStream os = sock.getOutputStream();
         DataOutputStream out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
         out.writeInt(files.size());

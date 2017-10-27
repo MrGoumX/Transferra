@@ -11,19 +11,19 @@ import static java.lang.System.exit;
 public class Receive implements Runnable{
 
     // Constants.
-    private static final int  port = 49900;
     private static final int size = 1024*1024;
 
     private ServerSocket server = null;
     private BufferedOutputStream bos;
     private FileOutputStream fos;
     private String storePath;
-    private String ID,authID;
+    private String authID;
+    private  int port;
 
-    public Receive(String ID, String file,String authID){
-        this.ID=ID;
+    public Receive(String file, String authID, int port){
         this.storePath = file;
         this.authID=authID;
+        this.port = port;
     }
 
     public void run(){
@@ -31,7 +31,7 @@ public class Receive implements Runnable{
             startServer(port);
             if (receiveAuth()) {
                 for(int i=0; i<receiveNoFiles();i++){
-                    openFile(storePath,reveiveName());
+                    openFile(storePath, receiveName());
                     try {
                         readData();
                     } catch (IOException e) {
@@ -66,10 +66,10 @@ public class Receive implements Runnable{
     }
 
     private void readData() throws IOException{
+
         int current;
         byte buffer[] = new byte[size];
-        Socket sock = null;
-        sock = server.accept();
+        Socket sock = server.accept();
         System.out.println("Connect to server.");
         InputStream is = sock.getInputStream();
         bos = new BufferedOutputStream(fos);
@@ -86,21 +86,22 @@ public class Receive implements Runnable{
     }
 
     private boolean receiveAuth() throws IOException {
-        boolean check=false;
-        Socket sock = null;
-        sock = server.accept();
+
+        boolean check = false;
+        Socket sock = server.accept();
         BufferedReader receiveAuth = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         String recAuth = receiveAuth.readLine();
         if (recAuth.equals(authID)) {
             check = true;
         }
         receiveAuth.close();
+        sock.close();
+
         return check;
     }
 
-    private String reveiveName()throws IOException {
-        Socket sock = null;
-        sock = server.accept();
+    private String receiveName()throws IOException {
+        Socket sock = server.accept();
         BufferedReader receiveName = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         String name = receiveName.readLine();
         receiveName.close();
@@ -108,11 +109,11 @@ public class Receive implements Runnable{
     }
 
     private int receiveNoFiles() throws IOException {
-        Socket sock = null;
-        sock = server.accept();
+        Socket sock = server.accept();
         DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
         int no = in.readInt();
         in.close();
+        sock.close();
         return no;
     }
 }
