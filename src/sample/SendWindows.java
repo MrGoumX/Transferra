@@ -27,7 +27,7 @@ import java.util.Random;
 public class SendWindows {
 
     @FXML
-    private ComboBox fileComboBox;
+    private ComboBox<File> fileComboBox;
 
     @FXML
     private TextField idTextField;
@@ -41,39 +41,46 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
-    private Runnable send;
-    private Thread sendThread;
     private List<File> filesList;
-    private String ip;
 
     public void initialize() {
 
+        // files remove button initialization.
         Image image = new Image(getClass().getResourceAsStream("remove.png"));
         removeButton.setGraphic(new ImageView(image));
 
+        // Authentication Id initialization.
         authendicationTextField.setText((new Random().nextInt(899999) + 100000) + "" );
 
     }
 
+    // chooseFile provides a FileChooser for multiple files.
     public void chooseFile(ActionEvent e) {
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
-        filesList= fileChooser.showOpenMultipleDialog(null);
+        filesList = fileChooser.showOpenMultipleDialog(null);
         fileComboBox.getItems().addAll(filesList);
     }
 
+    // send sends files to server.
     public void send(ActionEvent e) {
+
+        // translate id to ip.
         String ip = getIpFromId(idTextField.getText());
 
-        send = new Send(filesList,ip,authendicationTextField.getText(),49900);
-        sendThread = new Thread(send);
+        // start client.
+        Runnable send = new Send(filesList, ip, authendicationTextField.getText(),49900);
+        Thread sendThread = new Thread(send);
         sendThread.start();
     }
 
+    // remove files from combobox.
     public void removeFileAction(ActionEvent e) {
         fileComboBox.getItems().remove(fileComboBox.getSelectionModel().getSelectedItem());
     }
 
+    // translate ip from id.
     private String getIpFromId(String id){
         String ip = id.replace(" ",""); // remove spaces " ".
         int pointers[] = {Integer.parseInt(""+ip.charAt(0)), Integer.parseInt(""+ip.charAt(1)), Integer.parseInt(ip.substring(ip.length()-2,ip.length())) }; // get pointers.
