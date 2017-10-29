@@ -34,6 +34,9 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
+    List<File> filesList;
+    private static long sentsize;
+
     public void initialize() {
 
         // files remove button initialization.
@@ -43,7 +46,7 @@ public class SendWindows {
         // Authentication Id initialization.
         authendicationTextField.setText((new Random().nextInt(899999) + 100000) + "" );
 
-        bindProgressBar();
+
 
     }
 
@@ -52,7 +55,7 @@ public class SendWindows {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
-        List<File> filesList = fileChooser.showOpenMultipleDialog(null);
+        filesList = fileChooser.showOpenMultipleDialog(null);
         fileComboBox.getItems().addAll(filesList);
     }
 
@@ -66,6 +69,7 @@ public class SendWindows {
         Runnable send = new Send(fileComboBox.getItems(), ip, authendicationTextField.getText(),49900);
         Thread sendThread = new Thread(send);
         sendThread.start();
+        bindProgressBar();
 
     }
 
@@ -85,15 +89,18 @@ public class SendWindows {
 
     private void bindProgressBar(){
         progressBar.setProgress(0);
-        final Service ser = new Service<Integer>(){
+        final Service ser = new Service<Long>(){
             @Override
             public Task createTask(){
                 return new Task<Object>(){
                     @Override
                     public Object call() throws InterruptedException{
-                        for(int i=0; i<1000; i++){
-                            updateProgress(i, 1000);// max = value that fills bar, i= current value at bar.
-                            Thread.sleep(10);// dealey progress in bar
+                        while(true){
+                            updateProgress(sentsize, core.Send.getSize());
+                            Thread.sleep(10);
+                            if(core.Send.getSize()==sentsize){
+                                break;
+                            }
                         }
                         return null;
                     }
@@ -102,5 +109,9 @@ public class SendWindows {
         };
         progressBar.progressProperty().bind(ser.progressProperty());// bind and start move.
         ser.restart();// start count and fill bar.
+    }
+
+    public static void increase(){
+        sentsize+=1024*1024;
     }
 }

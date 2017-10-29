@@ -9,6 +9,7 @@ import static java.lang.System.exit;
 public class Send implements Runnable{
     // Constants.
     private static final int size = 1024*1024;
+    private static long filesize;
 
     // Variables
     private byte[] buffer = new byte[size];
@@ -41,9 +42,15 @@ public class Send implements Runnable{
 
         for (int i = 0; i < files.size(); i++) {
 
+            //send size of file
+            sendSizeFile(i);
+
             //send name of file
             String name = files.get(i).getName();
             sendString(name);
+
+            //get size of file
+            filesize = files.get(i).length();
 
             //file.
             try {
@@ -65,7 +72,7 @@ public class Send implements Runnable{
         OutputStream os = null;
         // read file from computer.
         while (true) {
-
+            sample.SendWindows.increase();
             int i = bfis.read(buffer, 0, size);
             if (i == -1) {
                 break;
@@ -111,4 +118,21 @@ public class Send implements Runnable{
         sock.close();
     }
 
+    // SendFileSize send the size of the file to initialize progress bar
+    private void sendSizeFile(int i) throws IOException{
+        Socket sock = new Socket(ip, port);
+        OutputStream os = sock.getOutputStream();
+        DataOutputStream out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
+        out.writeLong(files.get(i).length());
+        System.out.println("Size of file to send: "+files.get(i).length());
+        out.flush();
+
+        out.close();
+        os.close();
+        sock.close();
+    }
+
+    public static long getSize(){
+        return filesize;
+    }
 }

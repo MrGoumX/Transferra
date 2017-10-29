@@ -9,6 +9,7 @@ public class Receive implements Runnable{
 
     // Constants.
     private static final int size = 1024*1024;
+    private static long filesize;
 
     private ServerSocket server = null;
     private FileOutputStream fos;
@@ -36,6 +37,10 @@ public class Receive implements Runnable{
                 // for each file:
                 int numberOfFiles = receiveNoFiles();
                 for(int i=0; i<numberOfFiles;i++){
+                    //get the size of file
+                    filesize = receiveFileSize();
+                    //sample.ReceiveWindows.bindProgressBar();
+                    //System.out.println("////////"+filesize);
                     // open path for storing.
                     openFile(storePath, receiveName());
                     // receive and store this file.
@@ -74,6 +79,7 @@ public class Receive implements Runnable{
         InputStream is = sock.getInputStream();
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         while((current = is.read(buffer))>0){
+            sample.ReceiveWindows.increase();
             bos.write(buffer,0,current);
         }
         bos.flush();
@@ -120,4 +126,19 @@ public class Receive implements Runnable{
         return no;
     }
 
+    // receiveFileSize() receives the size of the file to initialize progress bar
+    private long receiveFileSize() throws IOException{
+        Socket sock = server.accept();
+        System.out.println("Connect with server to receive file size.");
+        DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+        long filesize = in.readLong();
+        in.close();
+        sock.close();
+        System.out.println("received number of files is: "+ filesize);
+        return filesize;
+    }
+
+    public static long getSize(){
+        return filesize;
+    }
 }

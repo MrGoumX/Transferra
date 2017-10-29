@@ -2,6 +2,8 @@ package sample;
 
 import core.Receive;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -33,6 +35,8 @@ public class ReceiveWindows {
 
     @FXML
     private ProgressBar progressBar;
+
+    private static long receivedsize;
 
     public void initialize(){
 
@@ -69,6 +73,7 @@ public class ReceiveWindows {
         Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
         Thread receiveThread = new Thread(receive);
         receiveThread.start();
+        //bindProgressBar();
     }
 
     // Return public ip.
@@ -136,5 +141,34 @@ public class ReceiveWindows {
             }
         }
         return formatedID;
+    }
+
+    public void bindProgressBar(){
+        progressBar.setProgress(0);
+        final Service ser = new Service<Long>(){
+            @Override
+            public Task createTask(){
+                return new Task<Object>(){
+                    @Override
+                    public Object call() throws InterruptedException{
+                        while(true){
+                            updateProgress(receivedsize, core.Receive.getSize());
+                            Thread.sleep(10);
+                            System.out.println(receivedsize);
+                            if(core.Receive.getSize()==receivedsize){
+                                break;
+                            }
+                        }
+                        return null;
+                    }
+                };
+            }
+        };
+        progressBar.progressProperty().bind(ser.progressProperty());// bind and start move.
+        ser.restart();// start count and fill bar.
+    }
+
+    public static void increase(){
+        receivedsize+=1024*1024;
     }
 }
