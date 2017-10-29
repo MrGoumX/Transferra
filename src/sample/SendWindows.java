@@ -98,7 +98,7 @@ public class SendWindows {
                         while(true){
                             updateProgress(sentsize, core.Send.getSize());
                             Thread.sleep(10);
-                            if(core.Send.getSize()==sentsize){
+                            if(core.Send.getSize()<=sentsize){
                                 break;
                             }
                         }

@@ -73,7 +73,7 @@ public class ReceiveWindows {
         Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
         Thread receiveThread = new Thread(receive);
         receiveThread.start();
-        //bindProgressBar();
+        bindProgressBar();
     }
 
     // Return public ip.
@@ -151,11 +151,14 @@ public class ReceiveWindows {
                 return new Task<Object>(){
                     @Override
                     public Object call() throws InterruptedException{
-                        while(true){
+                        while(true) {
+                            Thread.sleep(100);
+                            if (core.Receive.getSize() != 0) break;
+                        }
+                        while(true) {
                             updateProgress(receivedsize, core.Receive.getSize());
                             Thread.sleep(10);
-                            System.out.println(receivedsize);
-                            if(core.Receive.getSize()==receivedsize){
+                            if (core.Receive.getSize() <= receivedsize) {
                                 break;
                             }
                         }
