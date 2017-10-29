@@ -81,8 +81,7 @@ public class ReceiveWindows {
         try{
             URL whatismyip = new URL("http://checkip.amazonaws.com");
             BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-            String ip = in.readLine(); //you get the IP as a String
-            return ip;
+            return in.readLine(); //you get the IP as a String
         }catch (IOException ioException){
             ioException.printStackTrace();
         }
@@ -143,11 +142,11 @@ public class ReceiveWindows {
         return formatedID;
     }
 
-    public void bindProgressBar(){
+    private void bindProgressBar(){
         progressBar.setProgress(0);
-        final Service ser = new Service<Long>(){
+        final Service ser = new Service<Object>(){
             @Override
-            public Task createTask(){
+            public Task<Object> createTask(){
                 return new Task<Object>(){
                     @Override
                     public Object call() throws InterruptedException{

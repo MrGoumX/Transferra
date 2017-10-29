@@ -34,7 +34,6 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
-    List<File> filesList;
     private static long sentsize;
 
     public void initialize() {
@@ -55,7 +54,7 @@ public class SendWindows {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
-        filesList = fileChooser.showOpenMultipleDialog(null);
+        List<File> filesList = fileChooser.showOpenMultipleDialog(null);
         fileComboBox.getItems().addAll(filesList);
     }
 
@@ -89,9 +88,9 @@ public class SendWindows {
 
     private void bindProgressBar(){
         progressBar.setProgress(0);
-        final Service ser = new Service<Long>(){
+        final Service ser = new Service<Object>(){
             @Override
-            public Task createTask(){
+            public Task<Object> createTask(){
                 return new Task<Object>(){
                     @Override
                     public Object call() throws InterruptedException{
@@ -112,6 +111,6 @@ public class SendWindows {
     }
 
     public static void increase(){
-        sentsize+=1024*1024;
+        sentsize += 1024*1024;
     }
 }

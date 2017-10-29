@@ -85,7 +85,7 @@ public class Send implements Runnable{
         System.out.println("Transfer Complete from client");
 
         bfis.close();
-        os.close();
+        if(os != null) os.close();
         sock.close();
     }
 
