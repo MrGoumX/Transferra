@@ -45,8 +45,6 @@ public class SendWindows {
         // Authentication Id initialization.
         authendicationTextField.setText((new Random().nextInt(899999) + 100000) + "" );
 
-
-
     }
 
     // chooseFile provides a FileChooser for multiple files.
@@ -89,6 +87,7 @@ public class SendWindows {
         return ip.substring(0,ip.length()-1);
     }
 
+    // bindProgressBar implements progressbar for send.
     private void bindProgressBar(){
         progressBar.setProgress(0);
         final Service ser = new Service<Object>(){
@@ -110,6 +109,7 @@ public class SendWindows {
         ser.restart();// start count and fill bar.
     }
 
+    // getTotalSize returns total size of bytes for all files.
     private long getTotalSize(List<File> files){
         long size = 0;
         for(File file: files){
@@ -118,6 +118,7 @@ public class SendWindows {
         return size;
     }
 
+    // increaseBytes increase the level of progressbar.
     public static  void increaseBytes(){
         currentBytes += 1024*1024;
     }

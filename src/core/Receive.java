@@ -11,7 +11,6 @@ public class Receive implements Runnable{
 
     // Constants.
     private static final int size = 1024*1024;
-    private static long filesize;
 
     private ServerSocket server = null;
     private FileOutputStream fos;
@@ -40,10 +39,6 @@ public class Receive implements Runnable{
                 // for each file:
                 numberOfFiles = receiveNoFiles();
                 for(int i=0; i<numberOfFiles;i++){
-                    //get the size of file
-                    filesize = receiveFileSize();
-                    //sample.ReceiveWindows.bindProgressBar();
-                    //System.out.println("////////"+filesize);
                     // open path for storing.
                     openFile(storePath, receiveName());
                     // receive and store this file.
@@ -86,6 +81,8 @@ public class Receive implements Runnable{
         }
         bos.flush();
         System.out.println("Transfer Complete from server.");
+
+        // Increase the number of sending files at progress bar.
         ReceiveWindows.increaseNoFiles();
 
         fos.close();
@@ -141,6 +138,7 @@ public class Receive implements Runnable{
         return filesize;
     }
 
+    // return total number of files, that will be received.
     public int getNumberOfFiles(){
         return numberOfFiles;
     }

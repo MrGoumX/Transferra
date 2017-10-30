@@ -79,6 +79,8 @@ public class Send implements Runnable{
             os = sock.getOutputStream();
             os.write(buffer,0,i);
             os.flush();
+
+            // increase the number of bytes that will send(for progress bar).
             SendWindows.increaseBytes();
         }
         System.out.println("Transfer Complete from client");

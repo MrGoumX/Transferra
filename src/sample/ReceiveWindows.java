@@ -37,6 +37,7 @@ public class ReceiveWindows {
     @FXML
     private ProgressBar progressBar;
 
+    // currentFiles represent number of files that have received.
     private static int currentFiles;
 
     public void initialize(){
@@ -46,7 +47,6 @@ public class ReceiveWindows {
 
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
-
 
     }
 
@@ -114,7 +114,7 @@ public class ReceiveWindows {
 
 
         /*
-        *  remove puncts,
+        *  remove ".",
         *  add zeros to make address with exactly 12 digits.
         *  reverse address,
         *  add spaces.
@@ -161,7 +161,7 @@ public class ReceiveWindows {
 
     }
 
-
+    // bindProgressBar implements progressbar for receive.
     private void bindProgressBar(Receive receive){
         progressBar.setProgress(0);
         final Service ser = new Service<Object>(){
@@ -189,6 +189,7 @@ public class ReceiveWindows {
         ser.restart();// start count and fill bar.
     }
 
+    // increaseNoFiles increase the level of progress bar.
     public static void increaseNoFiles(){
         currentFiles += 1;
     }
