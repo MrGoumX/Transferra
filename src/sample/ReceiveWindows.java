@@ -1,11 +1,13 @@
 package sample;
 
 import core.Receive;
+import core.UtilClass;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -35,10 +37,18 @@ public class ReceiveWindows {
     private ComboBox<String> networkComboBox;
 
     @FXML
+    private ComboBox<String> localIpComboBox;
+
+    @FXML
     private ProgressBar progressBar;
 
-    // currentFiles represent number of files that have received.
-    private static int currentFiles;
+
+    private static int currentFiles; // currentFiles represent number of files that have received.
+    private Thread receiveThread;
+
+
+    // Public Methods.
+
 
     public void initialize(){
 
@@ -72,10 +82,30 @@ public class ReceiveWindows {
     // Setup server and receive files at new thread.
     public void receive(ActionEvent e){
         Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
-        Thread receiveThread = new Thread(receive);
+        receiveThread= new Thread(receive);
         receiveThread.start();
         bindProgressBar((Receive) receive);
     }
+
+    // localIpComboAction
+    public void localIpComboAction(ActionEvent e){
+
+    }
+
+    // cancelAction cancels the receive of files.
+    public void cancelAction(ActionEvent e){
+        if(UtilClass.showConfirmWindows("Ακύρωση Λήψης", "Θέλετε να ακυρώσετε την λήψη αρχείων;")){
+            ((Node)(e.getSource())).getScene().getWindow().hide();
+            receiveThread.interrupt();
+        }
+    }
+
+    // increaseNoFiles increase the level of progress bar.
+    public static void increaseNoFiles(){
+        currentFiles += 1;
+    }
+
+    // Private Methods.
 
     // Return public ip.
     private String getPublicIp(){
@@ -189,8 +219,4 @@ public class ReceiveWindows {
         ser.restart();// start count and fill bar.
     }
 
-    // increaseNoFiles increase the level of progress bar.
-    public static void increaseNoFiles(){
-        currentFiles += 1;
-    }
 }

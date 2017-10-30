@@ -19,6 +19,8 @@ public class Send implements Runnable{
     private String ip,id;
     private int port;
 
+    // Public Methods.
+
     // Constructor.
     public Send(List<File> files, String ip, String id, int port ){
         this.files = files;
@@ -37,6 +39,8 @@ public class Send implements Runnable{
             ioException.printStackTrace();
         }
     }
+
+    // Private Methods.
 
     // openFile open and sends all files.
     private void openFile(List<File> files) throws IOException{

@@ -1,10 +1,12 @@
 package sample;
 
 import core.Send;
+import core.UtilClass;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
@@ -34,7 +36,10 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
-    private static long currentBytes;
+    private static long currentBytes; // currentBytes represent bytes, witch have sending.
+    private Thread sendThread;
+
+    // Public Methods.
 
     public void initialize() {
 
@@ -64,7 +69,7 @@ public class SendWindows {
 
         // start client in new thread.
         Runnable send = new Send(fileComboBox.getItems(), ip, authendicationTextField.getText(),49900);
-        Thread sendThread = new Thread(send);
+        sendThread = new Thread(send);
         sendThread.start();
         bindProgressBar();
 
@@ -74,6 +79,21 @@ public class SendWindows {
     public void removeFileAction(ActionEvent e) {
         fileComboBox.getItems().remove(fileComboBox.getSelectionModel().getSelectedItem());
     }
+
+    // cancelAction cancels the sending of files.
+    public void cancelAction(ActionEvent e){
+        if(UtilClass.showConfirmWindows("Ακύρωση Αποστολής", "Θέλετε να ακυρώσετε την αποστολή αρχείων;")){
+            ((Node)(e.getSource())).getScene().getWindow().hide();
+            sendThread.interrupt();
+        }
+    }
+
+    // increaseBytes increase the level of progressbar.
+    public static  void increaseBytes(){
+        currentBytes += 1024*1024;
+    }
+
+    // Private Methods.
 
     // translate ip from id.
     private String getIpFromId(String id){
@@ -116,10 +136,5 @@ public class SendWindows {
             size += file.length();
         }
         return size;
-    }
-
-    // increaseBytes increase the level of progressbar.
-    public static  void increaseBytes(){
-        currentBytes += 1024*1024;
     }
 }

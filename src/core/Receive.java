@@ -19,6 +19,8 @@ public class Receive implements Runnable{
     private  int port;
     private int numberOfFiles;
 
+    // Public Methods.
+
     // Constructor.
     public Receive(String storePath, String authID, int port){
         this.storePath = storePath;
@@ -53,6 +55,13 @@ public class Receive implements Runnable{
             e.printStackTrace();
         }
     }
+
+    // return total number of files, that will be received.
+    public int getNumberOfFiles(){
+        return numberOfFiles;
+    }
+
+    // Private Methods.
 
     // openFile create a FileOutptStream with the path andd name of file witch receive.
     private void openFile(String path, String name){
@@ -127,8 +136,4 @@ public class Receive implements Runnable{
         return no;
     }
 
-    // return total number of files, that will be received.
-    public int getNumberOfFiles(){
-        return numberOfFiles;
-    }
 }
