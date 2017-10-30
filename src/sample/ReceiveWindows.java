@@ -58,6 +58,8 @@ public class ReceiveWindows {
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
 
+        folderTextField.setText(System.getProperty("user.home"));
+
     }
 
     // Choose between id for Local IP(LAN) or for public IP(Internet).

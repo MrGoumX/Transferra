@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="127.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SendWindows">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SendWindows">
 <children>
    <GridPane>
       <columnConstraints>
@@ -34,7 +34,7 @@
                <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
             </GridPane.margin>
          </Text>
-         <TextField fx:id="idTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <TextField fx:id="idTextField" maxHeight="31.0" maxWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <padding>
                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
             </padding>
@@ -44,15 +44,15 @@
          </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <ComboBox fx:id="fileComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="184.0" HBox.hgrow="NEVER">
+                  <ComboBox fx:id="fileComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="201.0" HBox.hgrow="NEVER">
                      <padding>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <HBox.margin>
-                        <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="4.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeFileAction">
+                  <Button fx:id="removeButton" maxHeight="25.0" maxWidth="25.0" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#removeFileAction" prefHeight="25.0" prefWidth="25.0">
                      <HBox.margin>
                         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                      </HBox.margin>
@@ -70,7 +70,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="authendicationTextField" maxHeight="20.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="authendicationTextField" maxHeight="21.0" maxWidth="232.0" prefHeight="21.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
@@ -88,7 +88,7 @@
    </GridPane>
       <HBox>
          <children>
-         <ProgressBar fx:id="progressBar" prefHeight="25.0" prefWidth="356.0" progress="0.0">
+         <ProgressBar fx:id="progressBar" prefHeight="25.0" prefWidth="347.0" progress="0.0">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>

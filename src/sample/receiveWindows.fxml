@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="153.0" prefWidth="489.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReceiveWindows">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReceiveWindows">
    <children>
       <GridPane>
         <columnConstraints>
@@ -30,7 +30,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
             </Button>
-            <TextField fx:id="folderTextField" maxHeight="20.0" maxWidth="200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="190.0" GridPane.columnIndex="1">
+            <TextField fx:id="folderTextField" maxHeight="20.0" maxWidth="234.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="234.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
@@ -43,7 +43,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="IDTextField" maxHeight="25.0" maxWidth="202.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="IDTextField" maxHeight="25.0" maxWidth="234.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
@@ -61,7 +61,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="authendicationTextField" maxHeight="25.0" maxWidth="202.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="authendicationTextField" maxHeight="25.0" maxWidth="234.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <padding>
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </padding>
@@ -93,7 +93,7 @@
       </GridPane>
       <HBox>
          <children>
-            <ProgressBar fx:id="progressBar" prefHeight="25.0" prefWidth="356.0" progress="0.0">
+            <ProgressBar fx:id="progressBar" prefHeight="25.0" prefWidth="338.0" progress="0.0">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
