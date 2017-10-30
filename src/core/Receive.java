@@ -42,6 +42,7 @@ public class Receive implements Runnable{
                 numberOfFiles = receiveNoFiles();
                 for(int i=0; i<numberOfFiles;i++){
 
+                    if(Thread.currentThread().isInterrupted())break;
                     // open path for storing.
                     openFile(storePath, receiveName());
                     // receive and store this file.
@@ -86,7 +87,8 @@ public class Receive implements Runnable{
         System.out.println("Connect with client for sending files.");
         InputStream is = sock.getInputStream();
         BufferedOutputStream bos = new BufferedOutputStream(fos);
-        while((current = is.read(buffer))>0){
+
+        while(((current = is.read(buffer))>0) && (!Thread.currentThread().isInterrupted())){
             bos.write(buffer,0,current);
         }
         bos.flush();

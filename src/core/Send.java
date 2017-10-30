@@ -47,6 +47,7 @@ public class Send implements Runnable{
 
         for (int i = 0; i < files.size(); i++) {
 
+            if(Thread.currentThread().isInterrupted())break;
             //send name of file
             String name = files.get(i).getName();
             sendString(name);
@@ -71,7 +72,7 @@ public class Send implements Runnable{
         Socket sock = new Socket(ip, port);
         OutputStream os = null;
         // read file from computer.
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             int i = bfis.read(buffer, 0, size);
             if (i == -1) {
                 break;
