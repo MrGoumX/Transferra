@@ -55,6 +55,15 @@ public class ReceiveWindows {
         networkComboBox.setItems(FXCollections.observableArrayList("Internet","LAN"));
         networkComboBox.getSelectionModel().selectFirst();
 
+
+        localIpComboBox.setItems(FXCollections.observableArrayList(getLocalIp()));
+        if(getLocalIp().get(0).equals("192.168.56.1") && (getLocalIp().size()>1)){
+            localIpComboBox.getSelectionModel().select(1);
+        }else{
+            localIpComboBox.getSelectionModel().selectFirst();
+        }
+
+
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
 
@@ -65,7 +74,7 @@ public class ReceiveWindows {
     // Choose between id for Local IP(LAN) or for public IP(Internet).
     public void netComboAction(ActionEvent e) {
         if(networkComboBox.getValue().equals("LAN")){
-            IDTextField.setText(getIdFromIp(getLocalIp()));
+            IDTextField.setText(getIdFromIp(localIpComboBox.getValue()));
 
         }else{
             IDTextField.setText(getIdFromIp(getPublicIp()));
@@ -122,23 +131,27 @@ public class ReceiveWindows {
     }
 
     // Return Local IP.
-    private String getLocalIp(){
-        List<InetAddress> addressesList = new ArrayList<InetAddress>();
+    private List<String> getLocalIp(){
+        List<String> addressesList = new ArrayList<>();
         try{
+            // for each network interface.
             Enumeration Interfaces = NetworkInterface.getNetworkInterfaces();
             while(Interfaces.hasMoreElements()) {
                 NetworkInterface Interface = (NetworkInterface) Interfaces.nextElement();
+
+                //for each address of this interface.
                 Enumeration Addresses = Interface.getInetAddresses();
                 while (Addresses.hasMoreElements()) {
                     InetAddress Address = (InetAddress) Addresses.nextElement();
-                    if (Address.getHostAddress().contains(".") && Address.isSiteLocalAddress() && !Address.isLoopbackAddress()) addressesList.add(Address);
+                    // if address is IPv4, local and not loopback then add it to list.
+                    if (Address.getHostAddress().contains(".") && Address.isSiteLocalAddress() && !Address.isLoopbackAddress()) addressesList.add(Address.getHostAddress());
                 }
             }
         }catch (SocketException socketException) {
             socketException.printStackTrace();
         }
 
-        return addressesList.get(0).getHostAddress();
+        return addressesList;
     }
 
     // Translate ip to id.

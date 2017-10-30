@@ -79,7 +79,7 @@
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <ComboBox fx:id="localIpCombobox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#localIpComboAction" prefHeight="25.0" prefWidth="115.0">
+                  <ComboBox fx:id="localIpComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#localIpComboAction" prefHeight="25.0" prefWidth="115.0">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
