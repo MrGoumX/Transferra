@@ -101,46 +101,55 @@ public class ReceiveWindows {
     // Translate ip to id.
     private String getIdFromIp(String ip){
 
-        Random random = new Random();
 
         /*
-        *  Replace all . with randoms digits.
-        *  Keep at prefix pointer to first two random digits.
-        *  Keep at suffix pointer to third random digit.
+        *  remove puncts,
+        *  add zeros to make address with exactly 12 digits.
+        *  reverse address,
+        *  add spaces.
         */
 
-        String prefix = "" + ip.indexOf(".");
-        ip = ip.replaceFirst("\\p{Punct}", ""+random.nextInt(10));
-
-        prefix += ip.indexOf(".");
-        ip = ip.replaceFirst("\\p{Punct}", ""+random.nextInt(10));
-
-        String suffix = "" + ((ip.indexOf(".") > 9)? ip.indexOf(".") : "0" + ip.indexOf("."));
-        ip =  ip.replaceFirst("\\p{Punct}", ""+random.nextInt(10));
-
-        // Create ID.
-        String id = prefix + ip + suffix;
-
-        // Add space " " between each two digits.
-        String formatedID = "";
-        int i;
-        for(i=0; i <= id.length(); i+=3){
-            if(i==id.length()){
-                // remember pointers start at 0.
-                break;
-            }else if ((i+1) == id.length()){
-                formatedID += id.charAt(i);
-                break;
-            }else if((i+2)==id.length()){
-                formatedID += id.substring(i, i+2);
-                break;
-            }
-            else{
-                formatedID += id.substring(i, i+3) + " ";
-            }
+        // replace all "." with "" and create pointer to "." as bounds.
+        int pointers[] = new int[3];
+        for(int i=0; i<pointers.length; i++){
+            pointers[i] = ip.indexOf(".");
+            ip = ip.replaceFirst("\\p{Punct}", "");
         }
-        return formatedID;
+
+        // create 4 substrings with 4 fields of an IP.
+        String ipFields[] = new String[4];
+        int bound = 0;
+        for(int i=0; i<ipFields.length; i++){
+            if(i >= pointers.length){
+                ipFields[i] = ip.substring(bound, ip.length());
+                break;
+            }
+            ipFields[i] = ip.substring(bound, pointers[i]);
+            bound = pointers[i];
+        }
+
+        // fill each substring with 0 to have 3 digits and concat all substrings to one.
+        ip = "";
+        for(int i=0; i<ipFields.length; i++){
+            switch (ipFields[i].length()){
+                case 1:
+                    ipFields[i] = "00" + ipFields[i];
+                    break;
+                case 2:
+                    ipFields[i] = "0" + ipFields[i];
+                    break;
+            }
+            ip += ipFields[i];
+        }
+
+        // reverse id.
+        ip = new StringBuilder().append(ip).reverse().toString();
+
+        // add spaces and return id.
+        return ip.substring(0,3) + " " + ip.substring(3,6) + " " + ip.substring(6,9) + " " + ip.substring(9,12);
+
     }
+
 
     private void bindProgressBar(){
         progressBar.setProgress(0);

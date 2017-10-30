@@ -33,7 +33,7 @@ public class Controller {
     }
 
     private Menu createSendMenu(){
-        Label sendLabel = new Label("Send");
+        Label sendLabel = new Label("Αποστολή");
         sendLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -46,7 +46,7 @@ public class Controller {
     }
 
     private Menu createReceiveMenu(){
-        Label receiveLabel = new Label("Receive");
+        Label receiveLabel = new Label("Λήψη");
         receiveLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -59,7 +59,7 @@ public class Controller {
     }
 
     private Menu createHelpMenu(){
-        Label helpLabel = new Label("Help");
+        Label helpLabel = new Label("Βοήθεια");
         helpLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

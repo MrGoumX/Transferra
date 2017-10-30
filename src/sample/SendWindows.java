@@ -79,11 +79,14 @@ public class SendWindows {
 
     // translate ip from id.
     private String getIpFromId(String id){
-        String ip = id.replace(" ",""); // remove spaces " ".
-        int pointers[] = {Integer.parseInt(""+ip.charAt(0)), Integer.parseInt(""+ip.charAt(1)), Integer.parseInt(ip.substring(ip.length()-2,ip.length())) }; // get pointers.
-        ip = ip.substring(2,ip.length()-2); // remove pointers.
-        ip =  ip.substring(0,pointers[0]) + "." + ip.substring(pointers[0]+1,pointers[1])+"."+ ip.substring(pointers[1]+1, pointers[2]) + "." + ip.substring(pointers[2]+1, ip.length());
-        return ip;
+        id = id.replace(" ",""); // remove spaces " ".
+        id = new StringBuilder().append(id).reverse().toString();
+        String ip = "";
+        for(int i=0; i<id.length(); i+=3){
+            ip += id.substring(i, i+3).replaceFirst("^0+(?!$)", "") + ".";
+        }
+
+        return ip.substring(0,ip.length()-1);
     }
 
     private void bindProgressBar(){
