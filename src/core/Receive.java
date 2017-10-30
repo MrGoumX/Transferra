@@ -39,6 +39,7 @@ public class Receive implements Runnable{
                 // for each file:
                 numberOfFiles = receiveNoFiles();
                 for(int i=0; i<numberOfFiles;i++){
+
                     // open path for storing.
                     openFile(storePath, receiveName());
                     // receive and store this file.
@@ -124,18 +125,6 @@ public class Receive implements Runnable{
         sock.close();
         System.out.println("received number of files is: "+no);
         return no;
-    }
-
-    // receiveFileSize() receives the size of the file to initialize progress bar
-    private long receiveFileSize() throws IOException{
-        Socket sock = server.accept();
-        System.out.println("Connect with server to receive file size.");
-        DataInputStream in = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
-        long filesize = in.readLong();
-        in.close();
-        sock.close();
-        System.out.println("received size of file is: "+ filesize);
-        return filesize;
     }
 
     // return total number of files, that will be received.

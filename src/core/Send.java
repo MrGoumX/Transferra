@@ -43,9 +43,6 @@ public class Send implements Runnable{
 
         for (int i = 0; i < files.size(); i++) {
 
-            //send size of file
-            sendSizeFile(i);
-
             //send name of file
             String name = files.get(i).getName();
             sendString(name);
@@ -112,20 +109,6 @@ public class Send implements Runnable{
         DataOutputStream out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
         out.writeInt(files.size());
         System.out.println("No of files for send: "+files.size());
-        out.flush();
-
-        out.close();
-        os.close();
-        sock.close();
-    }
-
-    // SendFileSize send the size of the file to initialize progress bar
-    private void sendSizeFile(int i) throws IOException{
-        Socket sock = new Socket(ip, port);
-        OutputStream os = sock.getOutputStream();
-        DataOutputStream out = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
-        out.writeLong(files.get(i).length());
-        System.out.println("Size of file to send: "+files.get(i).length());
         out.flush();
 
         out.close();
