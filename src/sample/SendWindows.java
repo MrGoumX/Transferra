@@ -34,7 +34,7 @@ public class SendWindows {
     @FXML
     private Button removeButton;
 
-    private static long sentsize;
+    private static long currentBytes;
 
     public void initialize() {
 
@@ -98,11 +98,8 @@ public class SendWindows {
                     @Override
                     public Object call() throws InterruptedException{
                         while(true){
-                            updateProgress(sentsize, core.Send.getSize());
-                            Thread.sleep(10);
-                            if(core.Send.getSize()<=sentsize){
-                                break;
-                            }
+                            updateProgress(currentBytes, getTotalSize(fileComboBox.getItems()));
+                            if(currentBytes >= getTotalSize(fileComboBox.getItems()))break;
                         }
                         return null;
                     }
@@ -113,7 +110,15 @@ public class SendWindows {
         ser.restart();// start count and fill bar.
     }
 
-    public static void increase(){
-        sentsize += 1024*1024;
+    private long getTotalSize(List<File> files){
+        long size = 0;
+        for(File file: files){
+            size += file.length();
+        }
+        return size;
+    }
+
+    public static  void increaseBytes(){
+        currentBytes += 1024*1024;
     }
 }

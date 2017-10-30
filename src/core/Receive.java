@@ -1,5 +1,7 @@
 package core;
 
+import sample.ReceiveWindows;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -16,6 +18,7 @@ public class Receive implements Runnable{
     private String storePath;
     private String authID;
     private  int port;
+    private int numberOfFiles;
 
     // Constructor.
     public Receive(String storePath, String authID, int port){
@@ -35,7 +38,7 @@ public class Receive implements Runnable{
             // if authentication id is correct:
             if (receiveAuth()) {
                 // for each file:
-                int numberOfFiles = receiveNoFiles();
+                numberOfFiles = receiveNoFiles();
                 for(int i=0; i<numberOfFiles;i++){
                     //get the size of file
                     filesize = receiveFileSize();
@@ -79,11 +82,11 @@ public class Receive implements Runnable{
         InputStream is = sock.getInputStream();
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         while((current = is.read(buffer))>0){
-            sample.ReceiveWindows.increase();
             bos.write(buffer,0,current);
         }
         bos.flush();
         System.out.println("Transfer Complete from server.");
+        ReceiveWindows.increaseNoFiles();
 
         fos.close();
         bos.close();
@@ -134,11 +137,11 @@ public class Receive implements Runnable{
         long filesize = in.readLong();
         in.close();
         sock.close();
-        System.out.println("received number of files is: "+ filesize);
+        System.out.println("received size of file is: "+ filesize);
         return filesize;
     }
 
-    public static long getSize(){
-        return filesize;
+    public int getNumberOfFiles(){
+        return numberOfFiles;
     }
 }

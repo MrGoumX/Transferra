@@ -1,5 +1,7 @@
 package core;
 
+import sample.SendWindows;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -9,7 +11,6 @@ import static java.lang.System.exit;
 public class Send implements Runnable{
     // Constants.
     private static final int size = 1024*1024;
-    private static long filesize;
 
     // Variables
     private byte[] buffer = new byte[size];
@@ -49,8 +50,6 @@ public class Send implements Runnable{
             String name = files.get(i).getName();
             sendString(name);
 
-            //get size of file
-            filesize = files.get(i).length();
 
             //file.
             try {
@@ -72,7 +71,6 @@ public class Send implements Runnable{
         OutputStream os = null;
         // read file from computer.
         while (true) {
-            sample.SendWindows.increase();
             int i = bfis.read(buffer, 0, size);
             if (i == -1) {
                 break;
@@ -81,6 +79,7 @@ public class Send implements Runnable{
             os = sock.getOutputStream();
             os.write(buffer,0,i);
             os.flush();
+            SendWindows.increaseBytes();
         }
         System.out.println("Transfer Complete from client");
 
@@ -132,7 +131,4 @@ public class Send implements Runnable{
         sock.close();
     }
 
-    public static long getSize(){
-        return filesize;
-    }
 }

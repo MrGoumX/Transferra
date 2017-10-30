@@ -37,7 +37,7 @@ public class ReceiveWindows {
     @FXML
     private ProgressBar progressBar;
 
-    private static long receivedsize;
+    private static int currentFiles;
 
     public void initialize(){
 
@@ -74,7 +74,7 @@ public class ReceiveWindows {
         Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
         Thread receiveThread = new Thread(receive);
         receiveThread.start();
-        bindProgressBar();
+        bindProgressBar((Receive) receive);
     }
 
     // Return public ip.
@@ -105,7 +105,6 @@ public class ReceiveWindows {
         }catch (SocketException socketException) {
             socketException.printStackTrace();
         }
-        //"192.168.56.1" "loopback"
 
         return addressesList.get(0).getHostAddress();
     }
@@ -163,7 +162,7 @@ public class ReceiveWindows {
     }
 
 
-    private void bindProgressBar(){
+    private void bindProgressBar(Receive receive){
         progressBar.setProgress(0);
         final Service ser = new Service<Object>(){
             @Override
@@ -171,14 +170,13 @@ public class ReceiveWindows {
                 return new Task<Object>(){
                     @Override
                     public Object call() throws InterruptedException{
-                        while(true) {
-                            Thread.sleep(100);
-                            if (core.Receive.getSize() != 0) break;
+                        while(receive.getNumberOfFiles()==0){
+                            Thread.sleep(10);
                         }
                         while(true) {
-                            updateProgress(receivedsize, core.Receive.getSize());
-                            Thread.sleep(10);
-                            if (core.Receive.getSize() <= receivedsize) {
+                            updateProgress( currentFiles, receive.getNumberOfFiles());
+                            if(currentFiles == receive.getNumberOfFiles()){
+                                updateProgress(currentFiles, receive.getNumberOfFiles());// if remove this sentence, then the progress bar never fill
                                 break;
                             }
                         }
@@ -191,7 +189,7 @@ public class ReceiveWindows {
         ser.restart();// start count and fill bar.
     }
 
-    public static void increase(){
-        receivedsize+=1024*1024;
+    public static void increaseNoFiles(){
+        currentFiles += 1;
     }
 }
