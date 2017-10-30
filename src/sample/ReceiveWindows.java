@@ -91,6 +91,7 @@ public class ReceiveWindows {
 
     // Return Local IP.
     private String getLocalIp(){
+        List<InetAddress> addressesList = new ArrayList<InetAddress>();
         try{
             Enumeration Interfaces = NetworkInterface.getNetworkInterfaces();
             while(Interfaces.hasMoreElements()) {
@@ -98,13 +99,15 @@ public class ReceiveWindows {
                 Enumeration Addresses = Interface.getInetAddresses();
                 while (Addresses.hasMoreElements()) {
                     InetAddress Address = (InetAddress) Addresses.nextElement();
-                    if (Address.getHostAddress().contains(".") && Address.isSiteLocalAddress() && !Address.isLoopbackAddress()) return Address.getHostAddress();
+                    if (Address.getHostAddress().contains(".") && Address.isSiteLocalAddress() && !Address.isLoopbackAddress()) addressesList.add(Address);
                 }
             }
         }catch (SocketException socketException) {
             socketException.printStackTrace();
         }
-        return null;
+        //"192.168.56.1" "loopback"
+
+        return addressesList.get(0).getHostAddress();
     }
 
     // Translate ip to id.

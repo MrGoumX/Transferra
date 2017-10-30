@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Transferra:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Transferra_jar</output-path>
+    <root id="archive" name="Transferra.jar">
+      <element id="module-output" name="Transferra" />
+    </root>
+  </artifact>
+</component>
