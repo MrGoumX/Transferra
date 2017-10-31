@@ -1,9 +1,12 @@
 package core;
 
+import javafx.application.Platform;
 import sample.SendWindows;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import static java.lang.System.exit;
@@ -35,6 +38,22 @@ public class Send implements Runnable{
             sendString(id); // send authentication id.
             sendNoFiles(); // send number of files witch will send.
             openFile(files); // open files and send files.
+        }catch (ConnectException connectionException){
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            Platform.runLater(
+                    () -> {
+                        UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Πρόβλημα σύνδεσης με παραλήπτη. Πιθανόν ο παραλήπτης δεν έχει πατήσει λήψη αρχείων.");
+                    }
+            );
+            connectionException.printStackTrace();
+        }catch (UnknownHostException unknownHostException){
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            Platform.runLater(
+                    () -> {
+                        UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Πρόβλημα σύνδεσης με παραλήπτη. Πιθανόν το ID αποστολής να είναι εσφαλμένο.");
+                    }
+            );
+            unknownHostException.printStackTrace();
         }catch (IOException ioException){
             ioException.printStackTrace();
         }
