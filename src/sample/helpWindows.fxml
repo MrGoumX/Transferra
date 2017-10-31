@@ -9,10 +9,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HelpWindows">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.HelpWindows">
    <children>
-      <ImageView fx:id="logoImage" fitHeight="68.0" fitWidth="446.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER" />
+      <ImageView fx:id="logoImage" fitHeight="101.0" fitWidth="480.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER" />
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Το πρόγραμμα">
@@ -33,11 +32,11 @@
                   </VBox>
                </content>
           </Tab>
-            <Tab text="Λειτουργεία">
+            <Tab text="Λειτουργία">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <TextArea fx:id="functionalTextArea" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="functionalTextArea" prefHeight="188.0" prefWidth="479.0" />
                      </children>
                   </VBox>
                </content>
