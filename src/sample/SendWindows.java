@@ -64,6 +64,7 @@ public class SendWindows {
     // send sends files to server.
     public void send(ActionEvent e) {
 
+        if(progressBar.getProgress()>0)return;
         if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
             UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακέραιους αριθμούς.");
             return;
@@ -123,6 +124,7 @@ public class SendWindows {
 
     // bindProgressBar implements progressbar for send.
     private void bindProgressBar(){
+
         progressBar.setProgress(0);
         final Service ser = new Service<Object>(){
             @Override
@@ -139,6 +141,7 @@ public class SendWindows {
                 };
             }
         };
+
         progressBar.progressProperty().bind(ser.progressProperty());// bind and start move.
         ser.restart();// start count and fill bar.
     }
