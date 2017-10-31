@@ -65,7 +65,7 @@ public class SendWindows {
     public void send(ActionEvent e) {
 
         if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
-            UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακαίρεους αριθμούς.");
+            UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακέραιους αριθμούς.");
             return;
         }
 

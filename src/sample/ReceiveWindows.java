@@ -59,7 +59,7 @@ public class ReceiveWindows {
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
 
-        folderTextField.setText(System.getProperty("user.home" + File.separator + "Downloads"));
+        folderTextField.setText(System.getProperty("user.home") + File.separator + "Downloads");
 
     }
 
@@ -93,6 +93,13 @@ public class ReceiveWindows {
 
     // Setup server and receive files at new thread.
     public void receive(ActionEvent e){
+
+        if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
+            UtilClass.showErrorAlert("Σφάλμα Λήψης", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακέραιους αριθμούς.");
+            return;
+        }
+
+
         Runnable receive = new Receive(folderTextField.getText(), authendicationTextField.getText(), 49900);
         receiveThread= new Thread(receive);
         receiveThread.start();
