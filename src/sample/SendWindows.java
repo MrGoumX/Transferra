@@ -64,7 +64,9 @@ public class SendWindows {
     // send sends files to server.
     public void send(ActionEvent e) {
 
+        //  prevents more than one send from the same thread.
         if(progressBar.getProgress()>0)return;
+
         if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
             UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακέραιους αριθμούς.");
             return;

@@ -45,7 +45,7 @@ public class ReceiveWindows {
 
     private static int currentFiles; // currentFiles represent number of files that have received.
     private Thread receiveThread;
-    private boolean hasBeforeReceived = false;
+    private boolean hasBeforeReceived = false;// hasBeforeReceived prevents more than one receive from the same thread.
 
 
     // Public Methods.
@@ -95,7 +95,9 @@ public class ReceiveWindows {
     // Setup server and receive files at new thread.
     public void receive(ActionEvent e){
 
+        //  prevents more than one receive from the same thread.
         if(hasBeforeReceived)return;
+
         if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
             UtilClass.showErrorAlert("Σφάλμα Λήψης", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακέραιους αριθμούς.");
             return;
