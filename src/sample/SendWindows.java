@@ -58,7 +58,7 @@ public class SendWindows {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Επιλογή Αρχείου προς Αποστολή");
         List<File> filesList = fileChooser.showOpenMultipleDialog(null);
-        fileComboBox.getItems().addAll(filesList);
+        if(filesList!=null)fileComboBox.getItems().addAll(filesList);
     }
 
     // send sends files to server.
@@ -84,7 +84,7 @@ public class SendWindows {
     public void cancelAction(ActionEvent e){
         if(UtilClass.showConfirmWindows("Ακύρωση Αποστολής", "Θέλετε να ακυρώσετε την αποστολή αρχείων;")){
             ((Node)(e.getSource())).getScene().getWindow().hide();
-            sendThread.interrupt();
+            if(sendThread!=null) sendThread.interrupt();
         }
     }
 

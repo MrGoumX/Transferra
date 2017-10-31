@@ -108,7 +108,7 @@ public class ReceiveWindows {
     public void cancelAction(ActionEvent e){
         if(UtilClass.showConfirmWindows("Ακύρωση Λήψης", "Θέλετε να ακυρώσετε την λήψη αρχείων;")){
             ((Node)(e.getSource())).getScene().getWindow().hide();
-            receiveThread.interrupt();
+            if(receiveThread!=null) receiveThread.interrupt();
         }
     }
 
