@@ -56,14 +56,6 @@ public class ReceiveWindows {
         networkComboBox.getSelectionModel().selectFirst();
 
 
-        localIpComboBox.setItems(FXCollections.observableArrayList(getLocalIp()));
-        if(getLocalIp().get(0).equals("192.168.56.1") && (getLocalIp().size()>1)){
-            localIpComboBox.getSelectionModel().select(1);
-        }else{
-            localIpComboBox.getSelectionModel().selectFirst();
-        }
-
-
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
 
@@ -73,11 +65,20 @@ public class ReceiveWindows {
 
     // Choose between id for Local IP(LAN) or for public IP(Internet).
     public void netComboAction(ActionEvent e) {
+
         if(networkComboBox.getValue().equals("LAN")){
+
+            localIpComboBox.setItems(FXCollections.observableArrayList(getLocalIp()));
+            if(getLocalIp().get(0).equals("192.168.56.1") && (getLocalIp().size()>1)){
+                localIpComboBox.getSelectionModel().select(1);
+            }else{
+                localIpComboBox.getSelectionModel().selectFirst();
+            }
             IDTextField.setText(getIdFromIp(localIpComboBox.getValue()));
 
         }else{
             IDTextField.setText(getIdFromIp(getPublicIp()));
+            localIpComboBox.setItems(FXCollections.observableArrayList());
         }
     }
 
