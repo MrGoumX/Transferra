@@ -110,7 +110,7 @@ public class Controller {
             root = FXMLLoader.load(getClass().getResource("helpWindows.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Transferra");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 460, 280));
             stage.setResizable(false);
             stage.show();
         }
