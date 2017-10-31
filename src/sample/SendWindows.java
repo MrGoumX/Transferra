@@ -64,6 +64,21 @@ public class SendWindows {
     // send sends files to server.
     public void send(ActionEvent e) {
 
+        if(!UtilClass.isValidIdAuth(authendicationTextField.getText())){
+            UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID πιστοποίησης μπορεί να περιέχει μέχρι 10 ακαίρεους αριθμούς.");
+            return;
+        }
+
+        if(!UtilClass.isValidIpId(idTextField.getText())){
+            UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Το ID αποστολής βρίσκεται σε λάθος μορφή.");
+            return;
+        }
+
+        if(fileComboBox.getItems().isEmpty()){
+            UtilClass.showErrorAlert("Σφάλμα Αποστολής", "Δεν βρέθηκαν αρχεία προς αποστολή. Παρακαλώ επιλέξτε αρχεία.");
+            return;
+        }
+
         // translate id to ip.
         String ip = getIpFromId(idTextField.getText());
 
@@ -72,7 +87,6 @@ public class SendWindows {
         sendThread = new Thread(send);
         sendThread.start();
         bindProgressBar();
-
     }
 
     // remove files from combobox.

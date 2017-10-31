@@ -59,7 +59,7 @@ public class ReceiveWindows {
         IDTextField.setEditable(false);
         IDTextField.setText(getIdFromIp(getPublicIp()));
 
-        folderTextField.setText(System.getProperty("user.home"));
+        folderTextField.setText(System.getProperty("user.home" + File.separator + "Downloads"));
 
     }
 
