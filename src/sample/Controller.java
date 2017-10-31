@@ -59,7 +59,7 @@ public class Controller {
     }
 
     private Menu createHelpMenu(){
-        Label helpLabel = new Label("Βοήθεια");
+        Label helpLabel = new Label("Transferra");
         helpLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -109,7 +109,7 @@ public class Controller {
         try {
             root = FXMLLoader.load(getClass().getResource("helpWindows.fxml"));
             Stage stage = new Stage();
-            stage.setTitle("Βοήθεια");
+            stage.setTitle("Transferra");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
