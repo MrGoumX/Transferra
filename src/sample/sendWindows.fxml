@@ -96,7 +96,7 @@
                   <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                </HBox.margin>
          </ProgressBar>
-          <Button mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="59.0" text="Αποστολή">
+          <Button mnemonicParsing="false" onAction="#send" text="Αποστολή">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
